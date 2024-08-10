@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cave</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #000000, #333333);
+            color: #FFFFFF;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: auto;
+        }
+        h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 5px #000000;
+            margin: 0;
+        }
+        p {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+        a {
+            color: #00FF00;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            border: 2px solid #00FF00;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+        a:hover {
+            background-color: #00FF00;
+            color: #000000;
+        }
+        .menu-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .menu-icon div {
+            width: 35px;
+            height: 5px;
+            background-color: #FFFFFF;
+            margin: 6px 0;
+            transition: all 0.4s ease-in-out;
+        }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            z-index: 999;
+        }
+        .sidebar a {
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 1.5em;
+            color: #FFFFFF;
+            display: block;
+            transition: 0.3s;
+            border: 2px solid #FF0000;
+            margin: 10px 0;
+            background-color: #FF0000;
+            border-radius: 5px;
+        }
+        .sidebar a.story, .sidebar a.albums, .sidebar a.exam {
+            background-color: #00FF00;
+            border: 2px solid #00FF00;
+        }
+        .sidebar a.story:hover, .sidebar a.albums:hover, .sidebar a.exam:hover {
+            background-color: #00CC00;
+        }
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            color: #FFFFFF;
+            border: 2px solid #00FF00;
+            padding: 10px;
+            background-color: #00FF00; /* Kare şekli yeşil */
+            border-radius: 0; /* Kare şekli */
+        }
+        .sidebar .closebtn:hover {
+            background-color: #00CC00;
+            color: #000000;
+        }
+        .content {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #FFFFFF;
+            overflow: auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            font-size: 2.5em;
+        }
+        .content .text-and-image, .content .image-and-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            width: 80%;
+        }
+        .content .text-and-image p, .content .image-and-text p {
+            text-align: left;
+            margin: 0 20px;
+        }
+        .content .text-and-image img, .content .image-and-text img {
+            width: 600px;
+            height: 600px;
+        }
+        .content .image-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .content .image-grid img {
+            width: 300px;
+            height: 300px;
+        }
+        .content a {
+            font-size: 1.5em;
+            color: #00FF00;
+        }
+        .content a:hover {
+            text-decoration: underline;
+        }
+        .closebtn-content {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: #FFFFFF;
+            background-color: #00FF00;
+            border: 2px solid #00FF00;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .closebtn-content:hover {
+            background-color: #00CC00;
+            color: #000000;
+        }
+        #mainContent {
+            text-align: center;
+        }
+        #mainContent h1, #mainContent a {
+            margin: 0;
+        }
+        .copyright {
+            position: absolute;
+            bottom: 20px;
+            font-size: 1em;
+            color: #FFFFFF;
+            text-align: center;
+        }
+        .discord-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.5em;
+            color: #FFFFFF;
+            background-color: #7289DA;
+            border: 2px solid #7289DA;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .discord-link:hover {
+            background-color: #5a6bba;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-icon" onclick="openNav()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#" class="story" onclick="showStory()">Life Story</a>
+        <a href="#" class="albums" onclick="showAlbums()">Albums</a>
+        <a href="#" class="exam" onclick="showExam()">Exam</a>
+    </div>
+
+    <div id="mainContent">
+        <h1>WELCOME TO THE CAVE</h1>
+        <p>HAIL TO THE R1TVOL</p>
+        <a href="{{ url_for('index') }}">Back to the registration</a>
+    </div>
+
+    <div id="storyContent" class="content">
+        <h2>Life Story</h2>
+        <div class="text-and-image">
+            <p>Orçun "R1tVol" ATA was born in 06.28.2008 04:30 A.M. in the Samatya hospital He was a curious child which always wanted to see inside the nightstands, wardrobes etc. he's also a child with jealous and narcissistic personality. Once a time he had a walking toy dog named "Benekli" he sees it while walking but he can't, so he grab his toy and smashed it to the wall and beat him 'till he broke him. That wish always push him to being the best and the top one. He wants to all people to talk about him and his life, well… because he's awesome.</p>
+            <img src="/static/img/newborn.jpg" height="600" width="600" alt="Image">
+        </div>
+        <div class="image-and-text">
+            <img src="/static/img/oneyr.jpg" height="600" width="600" alt="Image1">
+            <p>Little R1tVol meet the video games when he was 3 years old with help of his Xbox 360 her mother brought for him. He was acurious child, very curious indeed. He also liked to travel which go to work travels with her mom (AFAD etc.) and he also elected as youngest member of AFAD. Than he begin to understand English easily because of the videogames he played. He usually played with the games that in her mothers laptop. One day he discovered that he can examine this magical machine with games in it. So that's the his first breaking point of his life to became a software engineer. He than get more curious and wanted to learn about computers and the internet because it seems entertaining to him and when he gets his first personal computer (PC) he started to watch videos about history of the whole internet. And he created his first computer virus, "THE OMPHENA" which he accidentally run on his computer and this caused to his D: disk fully deleted but manage to save his C: disk.
+            </p>
+        </div>
+        <div class="image-and-text">
+            <p>After it he start to learn about coding with watching videos, he became a pro in HTML CSS JAVA JSript Asssembly python. Than he coded his first virus "THE OMPHENA" at the age of 10 and than he get curious about AI and Cybersecuriuty and learned them</p>
+            <img src="/static/img/new.jpg" height="600" width="600" alt="Image2">
+        </div>
+        <div class="image-and-text">
+            <img src="/static/img/aaa.png" height="600" width="600" alt="Image3">
+            <p>He's living in İstanbul, Turkey today. He's also the one of the 3 leaders of the Software Club which teaches people and students about Operating Systems (Windows, iOS, Kali Linux etc.). He's working very hard and he's doing his best to became a software engineer even a CTO (Chief Techlonogy Officer) of a famous company and planning to make revolutions in the subject of Artificial Intelligence. In short, if you do not want to make a competitive, stubborn, narcissistic, jealous and ambitious enemy, do not get on his way. He probably smash you to the ground and never let you to stand up again. -Orçun "R1tVol" ATA himself</p>
+        </div>
+        <div class="closebtn-content" onclick="goToMain()">Close</div>
+    </div>
+
+    <div id="albumsContent" class="content">
+        <h2>Albums</h2>
+        <div class="image-grid">
+            <img src="/static/img/photo1.jpg" alt="Photo 1">
+            <img src="/static/img/photo2.jpg" alt="Photo 2">
+            <img src="/static/img/photo3.jpg" alt="Photo 3">
+            <img src="/static/img/photo4.jpg" alt="Photo 4">
+            <img src="/static/img/photo5.jpg" alt="Photo 5">
+            <img src="/static/img/photo6.jpg" alt="Photo 6">
+            <img src="/static/img/photo7.jpg" alt="Photo 7">
+            <img src="/static/img/photo8.jpg" alt="Photo 8">
+            <img src="/static/img/photo9.jpg" alt="Photo 9">
+            <img src="/static/img/photo0.jpg" alt="Photo 0">
+            <img src="/static/img/photo10.jpg" alt="Photo 10">
+            <img src="/static/img/photo11.jpg" alt="Photo 11">
+            <img src="/static/img/photo12.jpg" alt="Photo 12">
+            <img src="/static/img/photo13.jpg" alt="Photo 13">
+            <img src="/static/img/photo14.jpg" alt="Photo 14">
+            <img src="/static/img/photo15.jpg" alt="Photo 15">
+            <img src="/static/img/photo16.jpg" alt="Photo 16">
+            <img src="/static/img/photo17.jpg" alt="Photo 17">
+            <img src="/static/img/photo18.jpg" alt="Photo 18">
+            <img src="/static/img/photo19.jpg" alt="Photo 19">
+            <img src="/static/img/photo20.jpg" alt="Photo 20">
+        </div>
+        <div class="closebtn-content" onclick="goToMain()">Close</div>
+    </div>
+
+    <div id="examContent" class="content">
+        <h2>Exam</h2>
+        <p>Prepare for your exam with the resources below!</p>
+        <a href="https://discord.com/oauth2/authorize?client_id=1270010452239323229&permissions=8&integration_type=0&scope=bot" class="discord-link">Go to Discord Bot</a>
+        <div class="closebtn-content" onclick="goToMain()">Close</div>
+    </div>
+
+    <div class="copyright">
+        All rights reserved by R1tVol ©.
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+
+        function showStory() {
+            document.getElementById("mainContent").style.display = "none";
+            document.getElementById("storyContent").style.display = "block";
+            document.getElementById("albumsContent").style.display = "none";
+            document.getElementById("examContent").style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        function showAlbums() {
+            document.getElementById("mainContent").style.display = "none";
+            document.getElementById("storyContent").style.display = "none";
+            document.getElementById("albumsContent").style.display = "block";
+            document.getElementById("examContent").style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        function showExam() {
+            document.getElementById("mainContent").style.display = "none";
+            document.getElementById("storyContent").style.display = "none";
+            document.getElementById("albumsContent").style.display = "none";
+            document.getElementById("examContent").style.display = "block";
+            document.body.style.overflow = "auto";
+        }
+
+        function goToMain() {
+            document.getElementById("mainContent").style.display = "block";
+            document.getElementById("storyContent").style.display = "none";
+            document.getElementById("albumsContent").style.display = "none";
+            document.getElementById("examContent").style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    </script>
+</body>
+</html>
