@@ -1,0 +1,1 @@
+A website about my life and life story, and also it has a discordbot if you add this discord bot to the any server and type "!startquiz" it asks you few quesitons about my life and if you won't guess those right it runs game.bat which sends the screen messages like you've been hacked
